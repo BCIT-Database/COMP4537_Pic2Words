@@ -6,14 +6,13 @@ import { registerUser, authenticateUser } from "../services/userService.js";
 // @route   POST /api/users
 // @access  Public
 export const register = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const user = await registerUser(name, email, password);
+    const user = await registerUser(email, password);
     const token = generateToken(user._id);
     res.status(201).json({
       _id: user._id,
-      name: user.name,
       email: user.email,
       token: token,
     });
@@ -35,7 +34,6 @@ export const login = asyncHandler(async (req, res) => {
     const token = generateToken(user._id);
     res.json({
       _id: user._id,
-      name: user.name,
       email: user.email,
       token: token,
     });

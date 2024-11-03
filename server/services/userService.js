@@ -2,13 +2,13 @@ import jwt from "jsonwebtoken";
 import { createUser, findUserByEmail } from "../models/userModel.js";
 
 // Register a new user
-export const registerUser = async (name, email, password) => {
+export const registerUser = async (email, password) => {
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
     throw new Error("User already exists with this email.");
   }
 
-  const userId = await createUser(name, email, password);
+  const userId = await createUser(email, password);
   return userId;
 };
 

@@ -46,7 +46,6 @@ const RegisterPage = () => {
   const { status, error } = useSelector((state) => state.users);
 
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -88,7 +87,7 @@ const RegisterPage = () => {
 
     //check if password meets requirements
     const isPasswordValid = Object.values(requirements).every((req) => req);
-    if (name && email && password && isPasswordValid) {
+    if (email && password && isPasswordValid) {
       dispatch(
         registerUser({ email, password })
       )
