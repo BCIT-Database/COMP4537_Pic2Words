@@ -1,20 +1,30 @@
-import jwt from "jsonwebtoken";
-import { createUser, findUserByEmail } from "../models/userModel.js";
+import {
+  createUser,
+  findUserByEmail as findUserByEmailDB,
+} from "../models/userModel.js";
 
 // Register a new user
 export const registerUser = async (email, password) => {
-  const existingUser = await findUserByEmail(email);
+  const existingUser = await findUserByEmailDB(email);
   if (existingUser) {
     throw new Error("User already exists with this email.");
   }
 
-  const userId = await createUser(email, password);
-  return userId;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  console.log("Calling createUser function with email and password");
+  const userId = await createUser(email, hashedPassword);
+  return { userId, email };
+};
+
+export const findUserByEmail = async (email) => {
+  return await findUserByEmailDB(email);
 };
 
 // Authenticate user
 export const authenticateUser = async (email, password) => {
-  const user = await findUserByEmail(email);
+  const user = await findUserByEmailDB(email);
   if (!user) {
     throw new Error("Invalid email or password.");
   }
@@ -24,5 +34,6 @@ export const authenticateUser = async (email, password) => {
     throw new Error("Invalid email or password.");
   }
 
+  // when user is found and password matches, return user
   return user;
 };

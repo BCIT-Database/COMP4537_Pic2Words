@@ -57,11 +57,12 @@ export const registerUser = createAsyncThunk(
   "user/register",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await api.post("users", userData, {
+      const response = await api.post("users/register", userData, {
         withCredentials: true,
       });
       return response.data;
     } catch (err) {
+      console.error("Registration error:", err.response?.data || err.message);
       return rejectWithValue(
         err.response?.data?.message || "Failed to register"
       );

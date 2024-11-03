@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
-import User from "../models/userModel.js";
+import { findUserById } from "../models/userModel.js";
+import { getDbConnection } from "../config/dbSelector.js";
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -11,20 +12,24 @@ const protect = asyncHandler(async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(" ")[1];
-
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = await User.findById(decoded.userId).select("-password");
-      console.log("User authenticated:", req.user);
+      // Get the database connection based on the user's role
+      const dbConnection = getDbConnection(decoded.role);
+      req.db = dbConnection;
 
+      req.user = await findUserById(decoded.userId, dbConnection);
+      if (!req.user) {
+        throw new Error("User not found.");
+      }
+
+      console.log("User authenticated:", req.user);
       next();
     } catch (error) {
       console.error("Token verification failed:", error);
       res.status(401).json({ message: "Not authorized, token failed" });
     }
-  }
-
-  if (!token) {
+  } else {
     console.log("No token provided in request");
     res.status(401).json({ message: "Not authorized, no token" });
   }

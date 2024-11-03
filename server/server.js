@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { getDbConnection } from "./config/dbSelector.js";
 import connectCloudStorage from "./config/cloudinary.js";
 import express from "express";
 import cors from "cors";
@@ -11,9 +10,7 @@ import userRoutes from "./routes/userRoutes.js";
 
 const port = process.env.PORT || 5000;
 
-// Connect to database and cloud storage
-getDbConnection();
-
+// Connect to cloud storage
 connectCloudStorage();
 
 const app = express();

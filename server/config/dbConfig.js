@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import mysql from "mysql2/promise";
 
 const adminConfig = {
@@ -6,8 +8,6 @@ const adminConfig = {
   user: process.env.MYSQL_ADMIN_USER,
   password: process.env.MYSQL_ADMIN_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  multipleStatements: false,
-  namedPlaceholders: true,
 };
 
 const customerConfig = {
@@ -16,10 +16,18 @@ const customerConfig = {
   user: process.env.MYSQL_CUSTOMER_USER,
   password: process.env.MYSQL_CUSTOMER_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  multipleStatements: false,
-  namedPlaceholders: true,
 };
 
-// Create connection pools
 export const adminDb = mysql.createPool(adminConfig);
 export const customerDb = mysql.createPool(customerConfig);
+
+export const getDbConnection = (role) => {
+  if (role === "admin") {
+    console.log("Using adminDb");
+    return adminDb;
+  } else {
+    console.log("Using customerDb");
+    console.log("Customer DB Config:", customerDb.config);
+    return customerDb;
+  }
+};
