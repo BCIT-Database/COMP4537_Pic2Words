@@ -26,3 +26,70 @@ node_modules
 # *.njsproj
 # *.sln
 # *.sw?
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile
+Pipfile.lock
+
+# Poetry
+poetry.lock
+poetry.toml
+
+# Environments
+.env
+.env.*
+*.env
+
+# PyCharm
+.idea/
+
+# VSCode
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Log files
+*.log
+
+# Large files like the ones you encountered in `torch` and `dnnl`
+*.lib
+*.dll
+
+# System files
+Thumbs.db
+Desktop.ini
+
+py_server/venv
