@@ -9,6 +9,11 @@ pipe = pipeline("image-to-text",
                 model="Salesforce/blip-image-captioning-large")
 
 
+@app.route("/")
+def hello():
+    return "blip python server is running!"
+
+
 @app.route('/generate-caption', methods=['POST'])
 def generate_caption():
     if 'image' not in request.files:
