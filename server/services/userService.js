@@ -2,6 +2,7 @@ import {
   createUser,
   findUserByEmail as findUserByEmailDB,
 } from "../models/userModel.js";
+import bcrypt from "bcryptjs";
 
 // Register a new user
 export const registerUser = async (email, password) => {
