@@ -18,7 +18,10 @@ const app = express();
 const allowedOrigins =
   process.env.NODE_ENV === "development"
     ? ["http://localhost:5173"]
-    : ["https://comp4537-pic2words-1.onrender.com"];
+    : [
+        "https://comp4537-pic2words-1.onrender.com",
+        "https://icy-stone-047aaa510.5.azurestaticapps.net",
+      ];
 
 app.use(
   cors({
