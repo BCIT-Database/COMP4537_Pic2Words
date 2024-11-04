@@ -13,9 +13,16 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
+        target: "https://stingray-app-jmrty.ondigitalocean.app",
         changeOrigin: true,
         secure: false,
+        rewrite: (path) => path.replace(/^\/api1/, "/api"),
+      },
+      "/api2": {
+        target: "https://urchin-app-5vle5.ondigitalocean.app", // 두 번째 백엔드 URL
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api2/, "/"), // API 경로 수정
       },
     },
   },
