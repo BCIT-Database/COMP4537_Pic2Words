@@ -14,7 +14,11 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${userInfo.token}`;
     }
 
-    config.baseURL = NodeServer;
+    if (config.url.startsWith("/api")) {
+      config.baseURL = NodeServer;
+    } else if (config.url.startsWith("/api2")) {
+      config.baseURL = PythonServer;
+    }
 
     return config;
   },
