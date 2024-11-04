@@ -8,6 +8,10 @@
   "scripts": {
     "start": "node server/server.js",
     "server": "nodemon server/server.js",
+    "web": "npm run dev --prefix web",
+    "dev": "concurrently \"npm run server\" \"npm run web\"",
+    "build": "npm install && npm install --prefix web && npm run build --prefix web",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
