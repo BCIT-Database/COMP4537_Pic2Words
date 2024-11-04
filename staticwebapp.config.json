@@ -5,7 +5,7 @@
   "routes": [
     {
       "route": "/api/*",
-      "rewrite": "https://stingray-app-jmrty.ondigitalocean.app/api/*"
+      "rewrite": "https://stingray-app-jmrty.ondigitalocean.app/*"
     }
   ],
   "outputLocation": "dist"
