@@ -41,25 +41,6 @@ const AppContent = () => {
       </Routes>
     </>
   )
-
-
-  // .env variables used so far:
-  // PORT=5000
-  // MONGO_URI=
-  // JWT_SECRET
-  // NODE_ENV=development
-  // CLOUDINARY_CLOUD_NAME=
-  // CLOUDINARY_API_KEY=
-  // CLOUDINARY_API_SECRET=
-  // EMAIL_USER =
-  // EMAIL_PASS =
-
-  // Delete mysql variables 
-  // MYSQL_HOST=
-  // MYSQL_PORT=
-  // MYSQL_USER=
-  // MYSQL_PASSWORD=
-  // MYSQL_DATABASE=
 }
 
 function App() {
