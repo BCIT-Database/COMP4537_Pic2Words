@@ -15,9 +15,20 @@ connectCloudStorage();
 
 const app = express();
 
+const allowedOrigins =
+  process.env.NODE_ENV === "development"
+    ? ["http://localhost:5173"]
+    : ["https://comp4537-pic2words-1.onrender.com"];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
