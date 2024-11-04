@@ -1,5 +1,5 @@
-export const initUserTable = async () => {
-  await db.query(`
+export const initUserTable = async (db) => {
+  const createTableQuery = `
     CREATE TABLE IF NOT EXISTS users (
       user_id INT AUTO_INCREMENT PRIMARY KEY,
       email VARCHAR(255) NOT NULL UNIQUE,
@@ -8,11 +8,11 @@ export const initUserTable = async () => {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )
-  `);
-  console.log("User table checked/created successfully.");
+  `;
+  await db.query(createTableQuery);
 };
 
-export const initImageTable = async () => {
+export const initImageTable = async (db) => {
   await db.query(`
    CREATE TABLE IF NOT EXISTS Images (
       image_id INT AUTO_INCREMENT PRIMARY KEY,                   
@@ -26,7 +26,7 @@ export const initImageTable = async () => {
   console.log("Image table checked/created successfully.");
 };
 
-export const initAPIUsageTable = async () => {
+export const initAPIUsageTable = async (db) => {
   await db.query(`
    CREATE TABLE API_Usage (
       id INT AUTO_INCREMENT PRIMARY KEY,               

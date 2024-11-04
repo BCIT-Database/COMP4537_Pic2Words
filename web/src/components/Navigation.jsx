@@ -37,7 +37,7 @@ const Navigation = () => {
             )}
           </Nav>
           {userInfo && (
-            <NavDropdown title={`Welcome, ${userInfo.name}`} id="basic-nav-dropdown" align="end">
+            <NavDropdown title={`Welcome, ${userInfo.email} (${userInfo.role})`} id="basic-nav-dropdown" align="end">
               <NavDropdown.Item onClick={() => navigate('/profile')}>Profile</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>

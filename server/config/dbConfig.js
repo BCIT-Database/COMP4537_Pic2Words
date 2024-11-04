@@ -22,12 +22,9 @@ export const adminDb = mysql.createPool(adminConfig);
 export const customerDb = mysql.createPool(customerConfig);
 
 export const getDbConnection = (role) => {
-  if (role === "admin") {
-    console.log("Using adminDb");
-    return adminDb;
-  } else {
-    console.log("Using customerDb");
-    console.log("Customer DB Config:", customerDb.config);
-    return customerDb;
+  const db = role === "admin" ? adminDb : customerDb;
+  if (process.env.NODE_ENV !== "production") {
+    console.log(`Using ${role}Db`);
   }
+  return db;
 };
