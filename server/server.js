@@ -16,7 +16,7 @@ const app = express();
 const allowedOrigins =
   process.env.NODE_ENV === "development"
     ? ["http://localhost:5173"]
-    : ["https://comp4537-pic2words-1.onrender.com"];
+    : ["https://pic2words-frontend.vercel.app"];
 
 app.use(
   cors({
