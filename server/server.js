@@ -13,10 +13,10 @@ connectCloudStorage();
 
 const app = express();
 
-const allowedOrigins =
-  process.env.NODE_ENV === "development"
-    ? ["http://localhost:5173"]
-    : ["https://pic2words-frontend.vercel.app"];
+const allowedOrigins = [
+  "https://pic2words-frontend.vercel.app",
+  "http://localhost:5173",
+];
 
 app.use(
   cors({
