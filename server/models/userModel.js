@@ -19,7 +19,7 @@ const executeQueryWithRetry = async (db, query, params) => {
 };
 
 export const createUser = async (email, password) => {
-  const db = getDbConnection("customer");
+  const db = getDbConnection("user");
   const query = "INSERT INTO users (email, password) VALUES (?, ?)";
   const params = [email, password];
 
@@ -28,7 +28,7 @@ export const createUser = async (email, password) => {
 };
 
 // Find user by email
-export const findUserByEmail = async (email, role = "customer") => {
+export const findUserByEmail = async (email, role = "user") => {
   const db = getDbConnection(role);
   const query = "SELECT * FROM users WHERE email = ?";
   const params = [email];
@@ -38,7 +38,7 @@ export const findUserByEmail = async (email, role = "customer") => {
 };
 
 // Find user by ID
-export const findUserById = async (userId, role = "customer") => {
+export const findUserById = async (userId, role = "user") => {
   const db = getDbConnection(role);
   const query = "SELECT * FROM users WHERE id = ?";
   const params = [userId];
