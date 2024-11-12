@@ -60,3 +60,23 @@ export const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
   res.json(users);
 });
+
+// @desc    Request password reset
+// @route   POST /api/users/forgot-password
+// @access  Public
+export const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  console.log("Received email:", email);
+  const message = await requestPasswordReset(email);
+  res.json({ message });
+});
+
+// @desc    Reset user password
+// @route   POST /api/users/reset-password/:token
+// @access  Public
+export const resetPassword = asyncHandler(async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+  const message = await resetUserPassword(token, password);
+  res.json({ message });
+});

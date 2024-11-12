@@ -38,3 +38,41 @@ export const authenticateUser = async (email, password) => {
   // when user is found and password matches, return user
   return user;
 };
+
+// Request password reset service
+export const requestPasswordReset = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  // Generate JWT
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
+  const resetLink = `https://stingray-app-jmrty.ondigitalocean.app/reset-password/${token}`;
+
+  // sending password reset email
+  await sendPasswordResetEmail(email, resetLink);
+
+  return "Password reset email sent";
+};
+
+// Reset user password service
+export const resetUserPassword = async (token, newPassword) => {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // new password hashing
+    user.password = await hashPassword(newPassword);
+    await user.save();
+
+    return "Password has been reset successfully";
+  } catch (error) {
+    throw new Error("Invalid or expired token");
+  }
+};
