@@ -10,7 +10,7 @@ const adminConfig = {
   database: process.env.MYSQL_DATABASE,
 };
 
-const customerConfig = {
+const userConfig = {
   host: process.env.MYSQL_HOST,
   port: process.env.MYSQL_PORT,
   user: process.env.MYSQL_CUSTOMER_USER,
@@ -19,10 +19,20 @@ const customerConfig = {
 };
 
 export const adminDb = mysql.createPool(adminConfig);
-export const customerDb = mysql.createPool(customerConfig);
+export const userDb = mysql.createPool(userConfig);
 
-export const getDbConnection = (role) => {
-  const db = role === "admin" ? adminDb : customerDb;
+// export const getDbConnection = (role) => {
+//   const db = role === "admin" ? adminDb : userDb;
+//   console.log(`Using ${role}Db`);
+//   return db;
+// };
+
+export function getDbConnection(role) {
+  console.log(`role ${role}`);
+  if (role === "admin") {
+    console.log(`Using ${role}Db`);
+    return adminDb;
+  }
   console.log(`Using ${role}Db`);
-  return db;
-};
+  return userDb;
+}
