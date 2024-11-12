@@ -1,4 +1,4 @@
-from flask import request, Flask
+from flask import request, Flask, jsonify
 from transformers import pipeline
 from PIL import Image
 import io
@@ -24,7 +24,7 @@ def generate_caption():
 
     try:
         result = pipe(image)
-        return result
+        return jsonify({"caption": result[0]["generated_text"]})
     except Exception as e:
         return str(e), 500
 
