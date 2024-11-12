@@ -36,17 +36,11 @@ export const login = asyncHandler(async (req, res) => {
   try {
     const user = await authenticateUser(email, password);
     const token = generateToken(user.id);
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
     res.json({
       _id: user.id,
       email: user.email,
       role: user.role,
+      token: token,
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
