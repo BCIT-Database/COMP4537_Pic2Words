@@ -6,9 +6,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "npm run dev",
     "server": "nodemon server/server.js",
-    "dev": "npm run server"
+    "py_server": "python py_server/app.py",
+    "dev": "concurrently \"npm run server\" \"npm run py_server\""
   },
   "keywords": [],
   "author": "",

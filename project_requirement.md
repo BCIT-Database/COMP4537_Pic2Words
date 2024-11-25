@@ -6,24 +6,24 @@
 - [x] Client web app that consumes API services.
 - [x] Server uses at least one pre-trained AI/ML model from HuggingFace (hosted locally if downloaded).
 - [x] Client and server hosted on different origins.
-- [ ] Authentication with httpOnly cookies and JWT (no third-party APIs for authentication).
-- [ ] Admin and user pages implemented.
+- [x] Authentication with httpOnly cookies and JWT (no third-party APIs for authentication).
+- [x] Admin and user pages implemented.
 - [ ] API documentation created using Swagger (e.g., `myAPIserver.xyz/API/v1/docs`).
 
 ## Authentication
 
-- [ ] User registration implemented on client app with server-side authentication.
+- [x] User registration implemented on client app with server-side authentication.
 - [ ] Each user receives 20 free API calls, after which an appropriate warning is displayed.
-- [ ] Authentication is token-based, using httpOnly cookies and JWT.
+- [x] Authentication is token-based, using httpOnly cookies and JWT.
 - [ ] Secure and follows standard practices.
 
 ## Security and Robustness
 
 - [ ] Protection against SQL injection.
 - [ ] Protection against XSS attacks.
-- [ ] Password hashing before storage in the database.
-- [ ] Proper CORS and header settings on the server.
-- [ ] User roles: `admin` and `user`.
+- [x] Password hashing before storage in the database.
+- [x] Proper CORS and header settings on the server.
+- [x] User roles: `admin` and `user`.
 - [ ] User API consumption visible upon login.
 - [ ] Admin can monitor user API consumption and API call stats.
 - [ ] JWT secret key stored securely (environment variable preferred but optional).
@@ -85,7 +85,7 @@
 
 - [x] Email format validation.
 - [x] Number validation where appropriate.
-- [ ] Input validation performed server-side for security.
+- [x] Input validation performed server-side for security.
 
 ## Attribution
 

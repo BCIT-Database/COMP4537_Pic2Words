@@ -80,3 +80,18 @@ export const resetPassword = asyncHandler(async (req, res) => {
   const message = await resetUserPassword(token, password);
   res.json({ message });
 });
+
+// @desc    Get user profile
+// @route   GET /api/users/profile
+// @access  Private
+export const getProfile = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Not authorized" });
+  }
+
+  res.json({
+    _id: req.user._id,
+    email: req.user.email,
+    role: req.user.role,
+  });
+});

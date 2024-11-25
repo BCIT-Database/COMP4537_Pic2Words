@@ -1,9 +1,12 @@
 from flask import request, Flask, jsonify
+from flask_cors import CORS
 from transformers import pipeline
 from PIL import Image
 import io
 
 app = Flask(__name__)
+CORS(app, resources={
+     r"/*": {"origins": ["http://localhost:5173", "https://pic2words-frontend.vercel.app"]}}, supports_credentials=True)
 
 pipe = pipeline("image-to-text",
                 model="Salesforce/blip-image-captioning-large")

@@ -5,14 +5,16 @@ import {
   login,
   forgotPassword,
   resetPassword,
+  getProfile,
 } from "../controllers/userController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 // User authentication and registration routes
 router.post("/register", register);
 router.post("/login", login);
-router.post("/", login);
+router.get("/profile", protect, getProfile);
 
 // Password reset routes
 router.post("/forgot-password", forgotPassword);

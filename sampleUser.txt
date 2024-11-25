@@ -1,0 +1,8 @@
+Sample user
+Admin:
+admin@admin.com
+ADMIN!admin1234
+
+Customer:
+customer@customer.com
+CUSTOMER!customer1234  
