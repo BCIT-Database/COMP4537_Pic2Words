@@ -1,5 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import generateToken from "../utils/generateToken.js";
+import jwt from "jsonwebtoken";
 import {
   registerUser,
   findUserByEmail,
@@ -29,6 +30,30 @@ export const register = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Get authenticated user info
+// @route   GET /api/users/me
+// @access  Private
+export const getAuthenticatedUser = asyncHandler(async (req, res) => {
+  const token = req.cookies.token;
+  console.log("Received token:", token);
+
+  if (!token) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    res.json({
+      userId: decoded.userId,
+      role: decoded.role,
+      email: decoded.email,
+    });
+  } catch (err) {
+    res.status(401).json({ message: "Invalid token" });
+  }
+});
+
 // @desc    Auth user & get token
 // @route   POST /api/users/login
 // @access  Public
@@ -37,19 +62,12 @@ export const login = asyncHandler(async (req, res) => {
 
   try {
     const user = await authenticateUser(email, password);
-    const token = generateToken(user.id);
-    console.log("Generated token:", token);
+    const token = generateToken(user.id, user.email, user.role);
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
-    });
-
-    res.json({
-      _id: user.id,
-      email: user.email,
-      role: user.role,
     });
   } catch (error) {
     res.status(400).json({ message: error.message });

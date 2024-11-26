@@ -4,14 +4,19 @@ import connectCloudStorage from "./config/cloudinary.js";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import path from "path";
 import homeRoutes from "./routes/homeRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+
+import swaggerUi from "swagger-ui-express";
+import { swaggerOptions } from "../swaggerConfig.js";
+import swaggerJsdoc from "swagger-jsdoc";
 
 // Connect to cloud storage
 connectCloudStorage();
 
 const app = express();
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS
@@ -37,6 +42,8 @@ app.use(cookieParser());
 app.use("/api", homeRoutes); // Set API path to '/api'
 // app.use("/api", uploadRoutes); // Commented out to avoid repetition
 app.use("/api/users", userRoutes);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
   res.send("API is running....");
