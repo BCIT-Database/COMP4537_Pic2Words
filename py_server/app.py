@@ -2,7 +2,7 @@ from flask import request, Flask, jsonify
 from flask_cors import CORS
 from transformers import pipeline
 from PIL import Image
-from dotenv import load_dotenv
+from python-dotenv import load_dotenv
 import os
 import io
 import pymysql
@@ -11,7 +11,7 @@ load_dotenv()
 
 # get the environment variables
 MYSQL_HOST = os.getenv("MYSQL_HOST")
-MYSQL_PORT = int(os.getenv("MYSQL_PORT"))  
+MYSQL_PORT = int(os.getenv("MYSQL_PORT"))
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
 MYSQL_USER = os.getenv("MYSQL_CUSTOMER_USER")
 MYSQL_PASSWORD = os.getenv("MYSQL_CUSTOMER_PASSWORD")
@@ -45,7 +45,8 @@ def check_and_update_usage(user_id):
     try:
         with db.cursor() as cursor:
             # Check current API usage
-            cursor.execute("SELECT calls FROM API_Usage WHERE user_id = %s", (user_id,))
+            cursor.execute(
+                "SELECT calls FROM API_Usage WHERE user_id = %s", (user_id,))
             result = cursor.fetchone()
 
             if result and result["calls"] >= API_CALL_LIMIT:
@@ -58,7 +59,8 @@ def check_and_update_usage(user_id):
                 )
             else:
                 cursor.execute(
-                    "INSERT INTO API_Usage (user_id, calls, last_call) VALUES (%s, %s, NOW())", (user_id, 1)
+                    "INSERT INTO API_Usage (user_id, calls, last_call) VALUES (%s, %s, NOW())", (
+                        user_id, 1)
                 )
             db.commit()
             return {"success": True}
@@ -66,6 +68,7 @@ def check_and_update_usage(user_id):
         print(f"Error updating API usage: {e}")
         db.rollback()
         return {"success": False, "message": "Database error while updating API usage."}
+
 
 @app.route("/")
 def hello():
@@ -85,7 +88,8 @@ def generate_caption():
         return jsonify({"caption": result[0]["generated_text"]})
     except Exception as e:
         return str(e), 500
-    
+
+
 @app.route('/admin/api-usage', methods=['GET'])
 def admin_api_usage():
     """
