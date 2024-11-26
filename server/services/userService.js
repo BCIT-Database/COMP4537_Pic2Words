@@ -3,6 +3,7 @@ import {
   findUserByEmail as findUserByEmailDB,
   updateUserPassword,
   findUserById,
+  getAllUsersWithAPIUsage,
 } from "../models/userModel.js";
 import { sendPasswordResetEmail } from "./emailService.js";
 import bcrypt from "bcryptjs";
@@ -86,5 +87,19 @@ export const resetUserPassword = async (token, newPassword) => {
     return "Password has been reset successfully";
   } catch (error) {
     throw new Error("Invalid or expired token");
+  }
+};
+
+// Service to fetch all users with API usage information
+export const fetchAllUsersWithAPIUsageService = async (role = "admin") => {
+  try {
+    // Fetch user and API usage data from the database
+    const usersWithAPIUsage = await getAllUsersWithAPIUsage(role);
+
+    // Return the fetched data
+    return usersWithAPIUsage;
+  } catch (error) {
+    console.error("Error in fetchAllUsersWithAPIUsageService:", error.message);
+    throw new Error("Failed to fetch all users with API usage information.");
   }
 };

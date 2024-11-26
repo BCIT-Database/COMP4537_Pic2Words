@@ -5,16 +5,6 @@ from transformers import pipeline
 from PIL import Image
 import io
 
-
-# load_dotenv()
-
-# # get the environment variables
-# MYSQL_HOST = os.getenv("MYSQL_HOST")
-# MYSQL_PORT = int(os.getenv("MYSQL_PORT"))
-# MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
-# MYSQL_USER = os.getenv("MYSQL_CUSTOMER_USER")
-# MYSQL_PASSWORD = os.getenv("MYSQL_CUSTOMER_PASSWORD")
-
 app = Flask(__name__)
 # Swagger Configuration
 swagger_config = {

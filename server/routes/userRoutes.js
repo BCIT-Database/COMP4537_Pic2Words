@@ -169,7 +169,7 @@ router.post("/forgot-password", forgotPassword);
 /**
  * @swagger
  * /users/reset-password/{token}:
- *   post:
+ *   put:
  *     summary: Reset a user's password
  *     tags: [Users]
  *     parameters:
@@ -196,6 +196,6 @@ router.post("/forgot-password", forgotPassword);
  *       400:
  *         description: Invalid token or request
  */
-router.post("/reset-password/:token", resetPassword);
+router.put("/reset-password/:token", resetPassword);
 
 export default router;

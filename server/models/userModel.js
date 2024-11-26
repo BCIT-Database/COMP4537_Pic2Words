@@ -27,6 +27,37 @@ export const createUser = async (email, password) => {
   return result.insertId;
 };
 
+// Get all users with API usage information
+export const getAllUsersWithAPIUsage = async (role = "admin") => {
+  try {
+    console.log("Fetching all users with API usage...");
+
+    const db = getDbConnection(role);
+    const query = `
+      SELECT 
+          u.user_id,
+          u.email,
+          u.role,
+          IFNULL(a.calls, 0) AS calls, 
+          a.last_call
+      FROM 
+          users u
+      LEFT JOIN 
+          API_Usage a
+      ON 
+          u.user_id = a.user_id;
+    `;
+
+    const rows = await executeQueryWithRetry(db, query);
+
+    console.log("All users with API usage fetched:", rows);
+    return rows;
+  } catch (error) {
+    console.error("Error fetching users with API usage:", error.message);
+    throw new Error("Failed to fetch users with API usage");
+  }
+};
+
 // Find user by email
 export const findUserByEmail = async (email, role = "user") => {
   const db = getDbConnection(role);

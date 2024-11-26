@@ -7,6 +7,7 @@ import {
   authenticateUser,
   requestPasswordReset,
   resetUserPassword,
+  fetchAllUsersWithAPIUsageService,
 } from "../services/userService.js";
 
 // @desc    Register a new user
@@ -93,8 +94,20 @@ export const logout = asyncHandler(async (req, res) => {
 // @route   GET /api/users
 // @access  Private/Admin
 export const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
-  res.json(users);
+  try {
+    // Check if the user has admin privileges
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied: Admins only" });
+    }
+
+    // Call the service to get the user and API usage data
+    const users = await fetchAllUsersWithAPIUsageService();
+
+    // Respond with the data
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message || "Failed to fetch data" });
+  }
 });
 
 // @desc    Request password reset
