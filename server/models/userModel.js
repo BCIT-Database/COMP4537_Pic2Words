@@ -30,7 +30,8 @@ export const createUser = async (email, password) => {
 // Find user by email
 export const findUserByEmail = async (email, role = "user") => {
   const db = getDbConnection(role);
-  const query = "SELECT * FROM users WHERE email = ?";
+  const query =
+    "SELECT user_id, email, password, role FROM users WHERE email = ?";
   const params = [email];
 
   const rows = await executeQueryWithRetry(db, query, params);
@@ -40,9 +41,17 @@ export const findUserByEmail = async (email, role = "user") => {
 // Find user by ID
 export const findUserById = async (userId, role = "user") => {
   const db = getDbConnection(role);
-  const query = "SELECT * FROM users WHERE id = ?";
+  const query = "SELECT user_id, email, password, role FROM users WHERE id = ?";
   const params = [userId];
 
   const rows = await executeQueryWithRetry(db, query, params);
   return rows[0];
+};
+
+// Update user password
+export const updateUserPassword = async (id, password) => {
+  await pool.query("UPDATE users SET password = ? WHERE id = ?", [
+    password,
+    id,
+  ]);
 };

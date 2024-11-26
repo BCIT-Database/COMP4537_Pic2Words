@@ -2,7 +2,14 @@ import {
   createUser,
   findUserByEmail as findUserByEmailDB,
 } from "../models/userModel.js";
+import { sendPasswordResetEmail } from "./emailService.js";
 import bcrypt from "bcryptjs";
+import generateToken from "../utils/generateToken.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const base_url = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS : [];
 
 // Register a new user
 export const registerUser = async (email, password) => {
@@ -41,16 +48,17 @@ export const authenticateUser = async (email, password) => {
 
 // Request password reset service
 export const requestPasswordReset = async (email) => {
-  const user = await User.findOne({ email });
+  // Find user by email
+  const user = await findUserByEmail(email);
   if (!user) {
     throw new Error("User not found");
   }
+  console.log("User found:", user);
 
-  // Generate JWT
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
-  });
-  const resetLink = `https://stingray-app-jmrty.ondigitalocean.app/reset-password/${token}`;
+  const token = generateToken(user.id);
+  console.log("Generated token:", token);
+  console.log(base_url);
+  const resetLink = `${base_url}/reset-password/${token}`;
 
   // sending password reset email
   await sendPasswordResetEmail(email, resetLink);
@@ -61,15 +69,21 @@ export const requestPasswordReset = async (email) => {
 // Reset user password service
 export const resetUserPassword = async (token, newPassword) => {
   try {
+    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id);
+
+    // Find user by ID
+    const user = await findUserById(decoded.id);
     if (!user) {
       throw new Error("User not found");
     }
 
-    // new password hashing
-    user.password = await hashPassword(newPassword);
-    await user.save();
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update user password in the database
+    await updateUserPassword(user.id, hashedPassword);
 
     return "Password has been reset successfully";
   } catch (error) {

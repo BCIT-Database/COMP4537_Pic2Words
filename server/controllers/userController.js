@@ -4,6 +4,8 @@ import {
   registerUser,
   findUserByEmail,
   authenticateUser,
+  requestPasswordReset,
+  resetUserPassword,
 } from "../services/userService.js";
 
 // @desc    Register a new user
@@ -36,6 +38,7 @@ export const login = asyncHandler(async (req, res) => {
   try {
     const user = await authenticateUser(email, password);
     const token = generateToken(user.id);
+    console.log("Generated token:", token);
 
     res.cookie("token", token, {
       httpOnly: true,
