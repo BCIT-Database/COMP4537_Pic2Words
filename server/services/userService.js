@@ -12,7 +12,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const base_url = process.env.ALLOWED_ORIGINS || "http://localhost:5173";
+const base_url = process.env.ALLOWED_ORIGINS;
 
 // Register a new user
 export const registerUser = async (email, password) => {
