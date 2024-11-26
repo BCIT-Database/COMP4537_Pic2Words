@@ -9,7 +9,7 @@
     "start": "npm run dev",
     "server": "nodemon server/server.js",
     "py_server": "python py_server/app.py",
-    "dev": "concurrently \"npm run server\" \"npm run py_server\""
+    "dev": "concurrently \"npm run py_server\" \"npm run server\" "
   },
   "keywords": [],
   "author": "",

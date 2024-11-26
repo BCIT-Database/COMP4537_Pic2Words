@@ -35,7 +35,6 @@ export const register = asyncHandler(async (req, res) => {
 // @access  Private
 export const getAuthenticatedUser = asyncHandler(async (req, res) => {
   const token = req.cookies.token;
-  console.log("Received token:", token);
 
   if (!token) {
     return res.status(401).json({ message: "Not authenticated" });
@@ -63,15 +62,31 @@ export const login = asyncHandler(async (req, res) => {
   try {
     const user = await authenticateUser(email, password);
     const token = generateToken(user.id, user.email, user.role);
-
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
+
+    res.status(200).json({
+      email: user.email,
+      role: user.role,
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
+});
+
+// @desc    Logout user
+// @route   POST /api/users/logout
+// @access  Public
+export const logout = asyncHandler(async (req, res) => {
+  res.cookie("token", "", {
+    httpOnly: true,
+    secure: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: "Logged out successfully" });
 });
 
 // @desc    Get all users
@@ -87,7 +102,6 @@ export const getUsers = asyncHandler(async (req, res) => {
 // @access  Public
 export const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
-  console.log("Received email:", email);
   const message = await requestPasswordReset(email);
   res.json({ message });
 });
@@ -97,6 +111,8 @@ export const forgotPassword = asyncHandler(async (req, res) => {
 // @access  Public
 export const resetPassword = asyncHandler(async (req, res) => {
   const { token } = req.params;
+  console.log("Resetting password with token:", token);
+  console.log("New password", req.body.password);
   const { password } = req.body;
   const message = await resetUserPassword(token, password);
   res.json({ message });

@@ -3,6 +3,7 @@ import express from "express";
 import {
   register,
   login,
+  logout,
   forgotPassword,
   resetPassword,
   getProfile,
@@ -110,6 +111,18 @@ router.post("/register", register);
  *         description: Invalid credentials
  */
 router.post("/login", login);
+
+/**
+ * @swagger
+ * /users/logout:
+ *   post:
+ *     summary: Log out the user
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Successfully logged out
+ */
+router.post("/logout", logout);
 
 /**
  * @swagger

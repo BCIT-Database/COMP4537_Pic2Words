@@ -28,11 +28,11 @@ export const userDb = mysql.createPool(userConfig);
 // };
 
 export function getDbConnection(role) {
-  console.log(`role ${role}`);
+  // console.log(`role ${role}`);
   if (role === "admin") {
-    console.log(`Using ${role}Db`);
+    // console.log(`Using ${role}Db`);
     return adminDb;
   }
-  console.log(`Using ${role}Db`);
+  // console.log(`Using ${role}Db`);
   return userDb;
 }

@@ -40,18 +40,37 @@ export const findUserByEmail = async (email, role = "user") => {
 
 // Find user by ID
 export const findUserById = async (userId, role = "user") => {
+  console.log("Received userId:", userId);
   const db = getDbConnection(role);
-  const query = "SELECT user_id, email, password, role FROM users WHERE id = ?";
+  const query =
+    "SELECT user_id, email, password, role FROM users WHERE user_id = ?";
   const params = [userId];
 
   const rows = await executeQueryWithRetry(db, query, params);
+
+  console.log("Rows:", rows);
   return rows[0];
 };
 
 // Update user password
-export const updateUserPassword = async (id, password) => {
-  await pool.query("UPDATE users SET password = ? WHERE id = ?", [
-    password,
-    id,
-  ]);
+export const updateUserPassword = async (userId, password, role = "user") => {
+  try {
+    console.log("Updating password for userId:", userId);
+
+    const db = getDbConnection(role);
+    const query = "UPDATE users SET password = ? WHERE user_id = ?";
+    const params = [password, userId];
+
+    const result = await executeQueryWithRetry(db, query, params);
+
+    console.log("Password update result:", result);
+    if (result.affectedRows === 0) {
+      throw new Error("User not found or no rows affected");
+    }
+
+    return "Password updated successfully";
+  } catch (error) {
+    console.error("Error updating user password:", error.message);
+    throw new Error("Failed to update password");
+  }
 };

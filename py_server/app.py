@@ -1,5 +1,6 @@
 from flask import request, Flask, jsonify
 from flask_cors import CORS
+from flasgger import Swagger
 from transformers import pipeline
 from PIL import Image
 import io
@@ -15,8 +16,31 @@ import io
 # MYSQL_PASSWORD = os.getenv("MYSQL_CUSTOMER_PASSWORD")
 
 app = Flask(__name__)
+# Swagger Configuration
+swagger_config = {
+    "headers": [],
+    "specs": [
+        {
+            "endpoint": "swagger",
+            "route": "/swagger.json",  # Swagger JSON endpoint
+            "rule_filter": lambda rule: True,  # Include all routes
+            "model_filter": lambda tag: True,  # Include all models
+        }
+    ],
+    "static_url_path": "/flasgger_static",
+    "swagger_ui": True,
+    "specs_route": "/doc/",  # Swagger UI endpoint
+}
+
+app.config["SWAGGER"] = {
+    "title": "Pic2Words Python API",
+    "version": "1.0.0",
+    "description": "Python API for Pic2Words project",
+    "uiversion": 3,
+}
+
 CORS(app, resources={
-     r"/*": {"origins": ["http://localhost:5173", "https://pic2words-frontend.vercel.app"]}}, supports_credentials=True)
+     r"/*": {"origins": ["http://localhost:5000", "http://localhost:5173", "https://pic2words-frontend.vercel.app"]}}, supports_credentials=True)
 
 
 # Database connection
@@ -75,6 +99,33 @@ def hello():
 
 @app.route('/generate-caption', methods=['POST'])
 def generate_caption():
+    """
+    Generate a caption for an uploaded image
+    ---
+    tags:
+      - Image-to-Text
+    consumes:
+      - multipart/form-data
+    parameters:
+      - in: formData
+        name: image
+        type: file
+        required: true
+        description: The image file to generate a caption for.
+    responses:
+      200:
+        description: Caption generated successfully
+        schema:
+          type: object
+          properties:
+            caption:
+              type: string
+              description: The generated caption
+      400:
+        description: No image file provided
+      500:
+        description: Server error while generating caption
+    """
     if 'image' not in request.files:
         return "No image file provided", 400
 
@@ -105,6 +156,9 @@ def generate_caption():
 #     except Exception as e:
 #         return jsonify({"error": f"Failed to fetch API usage: {str(e)}"}), 500
 
+
+# Initialize Swagger
+swagger = Swagger(app, config=swagger_config)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)
