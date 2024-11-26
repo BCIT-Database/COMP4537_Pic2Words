@@ -85,7 +85,7 @@ router.post("/register", register);
 
 /**
  * @swagger
- * /api/users/login:
+ * /users/login:
  *   post:
  *     summary: Log in a user
  *     tags: [Users]
