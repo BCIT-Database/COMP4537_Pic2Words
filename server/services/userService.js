@@ -57,7 +57,7 @@ export const requestPasswordReset = async (email) => {
     throw new Error("User not found");
   }
   const token = generateToken(user.user_id, user.email, user.role);
-  const resetLink = `http://localhost:5173/reset-password/${token}`;
+  const resetLink = base_url + `/reset-password/${token}`;
 
   // sending password reset email
   await sendPasswordResetEmail(email, resetLink);
